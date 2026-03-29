@@ -1,85 +1,124 @@
-Todo List App — Product Specification
-======================================
+ScholarDesk — Product Specification
+=====================================
 
 Overview
 --------
-An expanded single-file todo list web app targeting students. The app adds rich
-task organization (due dates, priorities, categories, subtasks) on top of the
-existing feature set, with a dashboard-style UI and localStorage persistence.
+A single-file academic todo/task manager targeting students. Built as a
+ScholarDesk-style dashboard with rich task organization (due dates, priorities,
+subjects/categories, subtasks), a fixed sidebar, stat cards, quick-add bar,
+and a bottom performance widget. Persists data via localStorage.
 
 
 Users
 -----
 Academic users managing coursework, assignments, and personal tasks from a
-single browser.
+single browser tab.
+
+
+Design System
+-------------
+Follows the "Digital Scholar" design system:
+- Fonts: Manrope (headlines), Inter (body) — loaded from Google Fonts
+- Primary color: #004ac6 (academic blue)
+- No 1px dividers — hierarchy via tonal surface shifts (background → surface-low
+  → surface-lowest → surface-high)
+- Buttons: linear gradient (#004ac6 → #2563eb) at 135°, full pill roundedness
+- Inputs: surface-low background, ghost blue focus ring at 20% opacity
+- Sidebar: glassmorphism (rgba 80% + backdrop-filter blur)
+- Shadows only on modal overlays
 
 
 Features
 --------
 
-1. Task Management (existing, retained)
-   - Add, edit, delete tasks inline
-   - Mark tasks complete/incomplete
-   - Filter by All / Active / Done
-   - Clear completed tasks
+1. Task Management
+   - Add tasks via modal or quick-add bar (press Enter)
+   - Edit and delete tasks
+   - Mark tasks complete/incomplete via checkbox
+   - Clear all completed tasks
 
 2. Due Dates
    - Optional due date per task (date picker)
-   - Visual indicators:
-       - Overdue   — red label
-       - Due today — orange label
-       - Upcoming  — grey label
+   - Visual indicators on card:
+       - Overdue   — red chip
+       - Due today — amber chip
+       - Upcoming  — grey chip
    - Sortable by due date
 
 3. Priority Levels
    - Three levels: High / Medium / Low
-   - Color-coded badge on each task card (red / yellow / grey)
-   - Sortable/filterable by priority
+   - Material-style container badges (error-container / secondary-container / surface-variant)
+   - Filterable and sortable by priority
 
-4. Categories & Tags
-   - Each task belongs to one category (e.g., Math, Physics, Personal)
-   - User can create, rename, and delete categories
-   - Sidebar or tab navigation to filter by category
-   - Category shown as a colored pill on each card
+4. Subjects (Categories)
+   - Each task belongs to one subject (e.g., Mathematics, Physics, Personal)
+   - User can create, rename, and delete subjects
+   - Sidebar lists subjects with colored dot indicators
+   - Subject shown as a colored chip on each task card
 
 5. Subtasks
-   - Each task can have an ordered list of subtasks
+   - Each task can have multiple subtasks
    - Subtasks are individually checkable
-   - Progress shown on the parent card as a fraction (e.g., 2 / 4 done)
-     and a mini progress bar
-   - Parent task auto-completes when all subtasks are done (with user
-     confirmation)
+   - Progress shown as "X/Y" count + mini progress bar on the parent card
+   - Progress bar turns green when all subtasks are complete
+   - Parent task auto-completes when all subtasks are done (with confirmation)
 
-6. Dashboard
-   Top of the app shows summary panels:
+6. Dashboard Stat Cards
+   Four cards at the top of the main area:
 
-   Panel       | Content
-   ------------|------------------------------------------
-   Total       | Count of all active tasks
-   Due Today   | Count of tasks due today
-   Overdue     | Count of overdue tasks
-   Completed   | Count of done tasks this week
+   Card         | Content
+   -------------|------------------------------------------
+   Total Active | Count of all incomplete tasks
+   Due Today    | Count of incomplete tasks due today
+   Overdue      | Count of incomplete overdue tasks (red bg)
+   Completed    | Count of tasks completed this week
+
+7. Bottom Widgets
+   - Weekly Performance: gradient card showing completed-this-week count
+   - Scholar Tip: static motivational card with hashtag tags
 
 
 UI Layout
 ---------
 
-  +---------------------------------------------+
-  |  Dashboard panels (4 stat cards)             |
-  +--------------+------------------------------+
-  |  Sidebar     |  Task list                   |
-  |  - All Tasks |  [+ Add task bar]            |
-  |  - By cat.   |  Filters: priority / due /   |
-  |  - Overdue   |           category / status  |
-  |  - Today     |                              |
-  |              |  [Task cards]                |
-  +--------------+------------------------------+
+  +------------------+------------------------------------------+
+  |  Sidebar (fixed) |  Main Content                            |
+  |                  |                                          |
+  |  ScholarDesk     |  Today's Focus          [search] [🔔][🕐]|
+  |  (logo)          |  <date> — N urgent items                 |
+  |                  |                                          |
+  |  MAIN NAVIGATION |  [Total Active][Due Today][Overdue][Done]|
+  |  - Dashboard     |                                          |
+  |  - Daily Planner |  [✏ I need to study... ] [Add Task]      |
+  |  - Overdue       |  [Priority] [Due Date] [Subject] [Sort]  |
+  |                  |                                          |
+  |  SUBJECTS        |  Urgent & Active           N items       |
+  |  • Mathematics   |  +------------------------------------+  |
+  |  • Physics       |  | [cb] Title            [OVERDUE]   |  |
+  |  + New Subject   |  |      Subject • Date • Subtasks X/Y|  |
+  |                  |  +------------------------------------+  |
+  |  [+ Create Task] |  ...                                     |
+  |  [user profile]  |  [Weekly Performance] [Scholar Tip]      |
+  +------------------+------------------------------------------+
 
 Each task card shows:
-  checkbox · title · category pill · priority badge · due date label ·
-  subtask progress bar · delete button
+  Left 4px border (color = status) · checkbox · title · status badge ·
+  subject chip · due date chip · priority badge · subtask progress ·
+  edit / expand / delete buttons
 
-Clicking a card expands it to reveal/edit subtasks.
+Clicking expand (▼) reveals subtask list and add-subtask form.
+
+
+Task Card Status
+----------------
+
+Status    | Left Border | Badge
+----------|-------------|--------
+Overdue   | Red         | OVERDUE (red)
+Today     | Amber       | TODAY (amber)
+Upcoming  | Blue        | UPCOMING (blue)
+Done      | Green       | DONE (green)
+No date   | Grey        | (none)
 
 
 Data Model
@@ -87,21 +126,22 @@ Data Model
 
 {
   "categories": [
-    { "id": 1, "name": "Math", "color": "#6c63ff" }
+    { "id": 1713000000000, "name": "Mathematics", "color": "#004ac6" }
   ],
   "todos": [
     {
-      "id": 1234,
-      "text": "Complete assignment 3",
+      "id": 1713000000001,
+      "text": "Submit Quantum Mechanics Thesis Draft",
       "done": false,
       "priority": "high",
       "dueDate": "2026-04-01",
-      "categoryId": 1,
+      "categoryId": 1713000000000,
       "subtasks": [
-        { "id": 1, "text": "Read chapter 5", "done": true },
-        { "id": 2, "text": "Solve exercises", "done": false }
+        { "id": 1713000000002, "text": "Review references", "done": true },
+        { "id": 1713000000003, "text": "Write conclusion", "done": false }
       ],
-      "createdAt": "2026-03-29"
+      "createdAt": "2026-03-29",
+      "completedAt": null
     }
   ]
 }
@@ -114,19 +154,23 @@ Sort & Filter
 
 Control             | Options
 --------------------|------------------------------------------
-Filter by status    | All / Active / Done
-Filter by priority  | All / High / Medium / Low
-Filter by due       | All / Today / Overdue / This week
-Filter by category  | All / [each category]
-Sort by             | Date added / Due date / Priority
+Filter by status    | All / Active / Done (cycled via pill click)
+Filter by priority  | All / High / Medium / Low (cycled)
+Filter by due       | All / Today / Overdue / This Week (cycled)
+Filter by subject   | All / [each subject] (dropdown)
+Sort by             | Date Added / Due Date / Priority (dropdown)
+
+Quick-add bar also accepts Enter key to add a task with no metadata.
 
 
 Tech Stack
 ----------
-- Single HTML file (HTML + CSS + vanilla JS)
+- Single HTML file (HTML + CSS + vanilla JS, ~900 lines)
+- Google Fonts: Manrope + Inter
 - No build tools, no dependencies
 - localStorage for persistence
-- Deployed on Netlify, source on GitHub
+- Source: GitHub (asafzus/todo-list-app)
+- Deployed: Netlify (auto-deploy on push to master)
 
 
 Out of Scope

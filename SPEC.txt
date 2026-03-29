@@ -1,10 +1,10 @@
-ScholarDesk — Product Specification
-=====================================
+Todo List App — Product Specification
+======================================
 
 Overview
 --------
 A single-file academic todo/task manager targeting students. Built as a
-ScholarDesk-style dashboard with rich task organization (due dates, priorities,
+dashboard-style app with rich task organization (due dates, priorities,
 subjects/categories, subtasks), a fixed sidebar, stat cards, quick-add bar,
 and a bottom performance widget. Persists data via localStorage.
 
@@ -84,7 +84,7 @@ UI Layout
   +------------------+------------------------------------------+
   |  Sidebar (fixed) |  Main Content                            |
   |                  |                                          |
-  |  ScholarDesk     |  Today's Focus          [search] [🔔][🕐]|
+  |  Todo List App     |  Today's Focus          [search] [🔔][🕐]|
   |  (logo)          |  <date> — N urgent items                 |
   |                  |                                          |
   |  MAIN NAVIGATION |  [Total Active][Due Today][Overdue][Done]|

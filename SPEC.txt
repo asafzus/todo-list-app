@@ -1,0 +1,138 @@
+Todo List App — Product Specification
+======================================
+
+Overview
+--------
+An expanded single-file todo list web app targeting students. The app adds rich
+task organization (due dates, priorities, categories, subtasks) on top of the
+existing feature set, with a dashboard-style UI and localStorage persistence.
+
+
+Users
+-----
+Academic users managing coursework, assignments, and personal tasks from a
+single browser.
+
+
+Features
+--------
+
+1. Task Management (existing, retained)
+   - Add, edit, delete tasks inline
+   - Mark tasks complete/incomplete
+   - Filter by All / Active / Done
+   - Clear completed tasks
+
+2. Due Dates
+   - Optional due date per task (date picker)
+   - Visual indicators:
+       - Overdue   — red label
+       - Due today — orange label
+       - Upcoming  — grey label
+   - Sortable by due date
+
+3. Priority Levels
+   - Three levels: High / Medium / Low
+   - Color-coded badge on each task card (red / yellow / grey)
+   - Sortable/filterable by priority
+
+4. Categories & Tags
+   - Each task belongs to one category (e.g., Math, Physics, Personal)
+   - User can create, rename, and delete categories
+   - Sidebar or tab navigation to filter by category
+   - Category shown as a colored pill on each card
+
+5. Subtasks
+   - Each task can have an ordered list of subtasks
+   - Subtasks are individually checkable
+   - Progress shown on the parent card as a fraction (e.g., 2 / 4 done)
+     and a mini progress bar
+   - Parent task auto-completes when all subtasks are done (with user
+     confirmation)
+
+6. Dashboard
+   Top of the app shows summary panels:
+
+   Panel       | Content
+   ------------|------------------------------------------
+   Total       | Count of all active tasks
+   Due Today   | Count of tasks due today
+   Overdue     | Count of overdue tasks
+   Completed   | Count of done tasks this week
+
+
+UI Layout
+---------
+
+  +---------------------------------------------+
+  |  Dashboard panels (4 stat cards)             |
+  +--------------+------------------------------+
+  |  Sidebar     |  Task list                   |
+  |  - All Tasks |  [+ Add task bar]            |
+  |  - By cat.   |  Filters: priority / due /   |
+  |  - Overdue   |           category / status  |
+  |  - Today     |                              |
+  |              |  [Task cards]                |
+  +--------------+------------------------------+
+
+Each task card shows:
+  checkbox · title · category pill · priority badge · due date label ·
+  subtask progress bar · delete button
+
+Clicking a card expands it to reveal/edit subtasks.
+
+
+Data Model
+----------
+
+{
+  "categories": [
+    { "id": 1, "name": "Math", "color": "#6c63ff" }
+  ],
+  "todos": [
+    {
+      "id": 1234,
+      "text": "Complete assignment 3",
+      "done": false,
+      "priority": "high",
+      "dueDate": "2026-04-01",
+      "categoryId": 1,
+      "subtasks": [
+        { "id": 1, "text": "Read chapter 5", "done": true },
+        { "id": 2, "text": "Solve exercises", "done": false }
+      ],
+      "createdAt": "2026-03-29"
+    }
+  ]
+}
+
+Stored under a single "todos-v2" key in localStorage.
+
+
+Sort & Filter
+-------------
+
+Control             | Options
+--------------------|------------------------------------------
+Filter by status    | All / Active / Done
+Filter by priority  | All / High / Medium / Low
+Filter by due       | All / Today / Overdue / This week
+Filter by category  | All / [each category]
+Sort by             | Date added / Due date / Priority
+
+
+Tech Stack
+----------
+- Single HTML file (HTML + CSS + vanilla JS)
+- No build tools, no dependencies
+- localStorage for persistence
+- Deployed on Netlify, source on GitHub
+
+
+Out of Scope
+------------
+- User accounts / login
+- Backend or database
+- Collaboration / sharing
+- Mobile app
+- LLM integration
